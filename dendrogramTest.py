@@ -15,7 +15,7 @@ Data = [[1, 2],
  [3, 2],
  [6, 3]]
 
-# Using the dendrogram to find the optimal number of clusters
+# Creating a dendrogram
 import scipy.cluster.hierarchy as hier
 dendrogram = hier.dendrogram(hier.linkage(Data, method = 'ward'))
 plt.title('Dendrogram')
