@@ -1,7 +1,11 @@
 # Importing the libs
 import numpy as np
 import matplotlib.pyplot as plt
-import pandas as pd
+# import pandas as pd
+
+# Importing test csv file with pd
+# dataset = pd.read_csv('TestData.csv')
+# Data = dataset.iloc[:, [1,2]].values
 
 # Test-Data
 Data = [[1, 2],
