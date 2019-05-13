@@ -18,6 +18,11 @@ Data = [[1, 2],
  [3, 2],
  [6, 3]]
 
+# Creating a scatter plot
+x,y = list(zip(*Data))
+plt.scatter(x, y)
+plt.show()
+
 # Creating a dendrogram
 import scipy.cluster.hierarchy as hier
 dendrogram = hier.dendrogram(hier.linkage(Data, method = 'ward'))
