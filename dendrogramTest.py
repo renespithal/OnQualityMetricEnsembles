@@ -39,11 +39,15 @@ plt.show()
 # Cutting the dendrogram
 distanceMatrix = pdist(Data)
 Z = hier.linkage(distanceMatrix, method='complete')
-monocrit = np.zeros((Z.shape[0], ))
-monocrit[[-1, -2]] = 1
-fc = hier.fcluster(Z, 0, criterion='monocrit', monocrit=monocrit)
+# monocrit = np.zeros((Z.shape[0], ))
+# monocrit[[-1, -2]] = 1
+# fc = hier.fcluster(Z, 0, criterion='monocrit', monocrit=monocrit)
 
-for k in range(1,4):
+# cut dendrogram at distance = 2
+fc = hier.fcluster(Z, 1 , criterion='distance')
+
+# print the clusters 
+for k in range(1,max(fc)):
     print(np.where(fc == k))
 
 
