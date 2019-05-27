@@ -80,9 +80,12 @@ sorted(c[0])
 nx.edge_betweenness_centrality(my_graph)
 
 # Conductance
+# S (sequence) – A sequence of nodes in my_graph.
+# T (sequence) – A sequence of nodes in my_graph.
 S = [0,5]
 T = [3,4]
 conductance(my_graph, S, T)
+
 
 
 
