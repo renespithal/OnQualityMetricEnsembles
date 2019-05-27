@@ -39,12 +39,9 @@ plt.show()
 # Cutting the dendrogram
 distanceMatrix = pdist(Data)
 Z = hier.linkage(distanceMatrix, method='complete')
-# monocrit = np.zeros((Z.shape[0], ))
-# monocrit[[-1, -2]] = 1
-# fc = hier.fcluster(Z, 0, criterion='monocrit', monocrit=monocrit)
 
 # cut dendrogram at distance = 2
-fc = hier.fcluster(Z, 1 , criterion='distance')
+fc = hier.fcluster(Z, 3.5 , criterion='distance')
 
 # print the clusters 
 for k in range(1,max(fc)):
@@ -53,6 +50,8 @@ for k in range(1,max(fc)):
 
 import networkx as nx
 from networkx.algorithms.community import greedy_modularity_communities
+from networkx.algorithms.cuts import conductance
+
 # Create a networkx graph object
 my_graph = nx.Graph() 
  
@@ -70,6 +69,18 @@ my_graph.add_edges_from([
  
 # Draw the resulting graph
 nx.draw(my_graph, with_labels=True, font_weight='bold')
+
 # Modularity
 c = list(greedy_modularity_communities(my_graph))
 sorted(c[0])
+
+# edge_betweenness_centrality
+nx.edge_betweenness_centrality(my_graph)
+
+# Conductance
+S = [0,5]
+T = [3,4]
+conductance(my_graph, S, T)
+
+
+
