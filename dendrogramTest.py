@@ -72,6 +72,8 @@ nx.draw(my_graph, with_labels=True, font_weight='bold')
 
 # Modularity
 c = list(greedy_modularity_communities(my_graph))
+
+# print sets of nodes, one for each community.
 sorted(c[0])
 
 # edge_betweenness_centrality
