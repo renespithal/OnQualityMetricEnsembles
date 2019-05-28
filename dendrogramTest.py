@@ -40,8 +40,8 @@ plt.show()
 distanceMatrix = pdist(Data)
 Z = hier.linkage(distanceMatrix, method='complete')
 
-# cut dendrogram at distance = 2
-fc = hier.fcluster(Z, 3.5 , criterion='distance')
+# cut dendrogram at certain distance
+fc = hier.fcluster(Z, 2 , criterion='distance')
 
 # print the clusters 
 for k in range(1,max(fc)):
