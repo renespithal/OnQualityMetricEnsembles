@@ -51,6 +51,7 @@ for k in range(1,max(fc)):
 import networkx as nx
 from networkx.algorithms.community import greedy_modularity_communities
 from networkx.algorithms.cuts import conductance
+from networkx.algorithms.community import quality as qu
 
 # Create a networkx graph object
 my_graph = nx.Graph() 
@@ -58,34 +59,30 @@ my_graph = nx.Graph()
 # Add edges to to the graph object
 # Each tuple represents an edge between two nodes
 my_graph.add_edges_from([
+                        (0,1), 
                         (1,2), 
-                        (1,3), 
-                        (3,4), 
-                        (1,5), 
-                        (3,5),
-                        (4,2),
-                        (2,3),
-                        (3,0)])
+                        (2,3), 
+                        (2,4), 
+                        (3,4)])
  
 # Draw the resulting graph
 nx.draw(my_graph, with_labels=True, font_weight='bold')
 
-# Modularity
+# Modularity Communities
 c = list(greedy_modularity_communities(my_graph))
 
 # print sets of nodes, one for each community.
-sorted(c[0])
+print("Communities: ", c)
+
+# Modularity Score
+print("Modularity Score: ", qu.modularity(my_graph, c))
 
 # edge_betweenness_centrality
-nx.edge_betweenness_centrality(my_graph)
+print("Edge Betweenness Centrality: ", nx.edge_betweenness_centrality(my_graph))
 
 # Conductance
 # S (sequence) – A sequence of nodes in my_graph.
 # T (sequence) – A sequence of nodes in my_graph.
-S = [0,5]
-T = [3,4]
-conductance(my_graph, S, T)
-
-
-
-
+S = [0,1]
+T = [2,3,4]
+print("Conductance: ", conductance(my_graph, S, T))
