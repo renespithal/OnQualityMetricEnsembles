@@ -44,8 +44,8 @@ Z = hier.linkage(distanceMatrix, method='complete')
 fc = hier.fcluster(Z, 2 , criterion='distance')
 
 # print the clusters 
-for k in range(1,max(fc)):
-    print(np.where(fc == k))
+#for k in range(1,max(fc)):
+#    print(np.where(fc == k))
 
 
 import networkx as nx
@@ -71,18 +71,30 @@ nx.draw(my_graph, with_labels=True, font_weight='bold')
 # Modularity Communities
 c = list(greedy_modularity_communities(my_graph))
 
-# print sets of nodes, one for each community.
-print("Communities: ", c)
-
 # Modularity Score
-print("Modularity Score: ", qu.modularity(my_graph, c))
+modScore =  qu.modularity(my_graph, c)
 
-# edge_betweenness_centrality
-print("Edge Betweenness Centrality: ", nx.edge_betweenness_centrality(my_graph))
 
 # Conductance
 # S (sequence) – A sequence of nodes in my_graph.
 # T (sequence) – A sequence of nodes in my_graph.
 S = [0,1]
 T = [2,3,4]
-print("Conductance: ", conductance(my_graph, S, T))
+condScore = conductance(my_graph, S, T)
+
+# edge_betweenness_centrality
+edgeBetweenness=  nx.edge_betweenness_centrality(my_graph)
+averageEdge = sum(edgeBetweenness.values())/len(edgeBetweenness)
+totalEdge = sum(edgeBetweenness.values())
+
+# print sets of nodes, one for each community.
+print("Communities: ", c)
+
+# Modularity Score
+print("Modularity: ", modScore)
+
+# Conductance Score
+print("Conductance: ", condScore)
+
+# edge_betweenness_centrality
+print("Edge Betweenness Centrality: ", averageEdge)
