@@ -39,12 +39,18 @@ plt.xlabel('Index')
 plt.ylabel('Distance')
 plt.show()
 
-# Cutting the dendrogram
+# Cutting the dendrogram with cut_tree
+from scipy import cluster
+Z = cluster.hierarchy.ward(X)
+cutree = cluster.hierarchy.cut_tree(Z,None,3)
+print(cutree)
+
+# Cutting the dendrogram fcluster
 distanceMatrix = pdist(X)
 Z = hier.linkage(distanceMatrix, method='complete')
 
 # cut dendrogram at certain distance
-fc = hier.fcluster(Z, 5 , criterion='distance')
+fc = hier.fcluster(Z, 3 , criterion='distance')
 
 # print the clusters 
 for k in range(1,max(fc)):
