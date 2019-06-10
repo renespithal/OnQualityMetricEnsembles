@@ -1,0 +1,48 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Mon Jun 10 22:24:42 2019
+
+@author: Rusty
+"""
+import networkx as nx
+from networkx.algorithms.community import greedy_modularity_communities
+from networkx.algorithms.cuts import conductance
+from networkx.algorithms.community import quality as qu
+
+
+# barbell_graph
+
+barb = nx.barbell_graph(4,0)
+nx.draw(barb, with_labels=True, font_weight='bold')
+
+S = [0,1,2,3]
+T = [4,5,6,7]
+
+# Conductance
+condScore = conductance(barb,S)
+
+# Modularity Communities
+barbMod = list(greedy_modularity_communities(barb))
+
+# Modularity Score
+barbModScore =  qu.modularity(barb, barbMod)
+
+# edge_betweenness_centrality
+barbedgeBetweenness=  nx.edge_betweenness_centrality(barb,None,False)
+barbaverageEdge = sum(barbedgeBetweenness.values())/len(barbedgeBetweenness)
+barbtotalEdge = sum(barbedgeBetweenness.values())
+
+# print sets of nodes, one for each community.
+print("Communities: ", barbMod)
+
+# Modularity Score
+print("Modularity: ", barbModScore)
+
+# Conductance Score
+print("Conductance: ", condScore)
+
+# edge_betweenness_centrality
+print("Edge Betweenness Centrality Score: ", barbaverageEdge)
+print("Edge Betweenness Centrality: ", barbedgeBetweenness)
+
+
