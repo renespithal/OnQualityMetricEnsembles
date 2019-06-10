@@ -11,12 +11,19 @@ from networkx.algorithms.community import quality as qu
 
 barb = nx.barbell_graph(4,0)
 nx.draw(barb, with_labels=True, font_weight='bold')
-
 S = [0,1,2,3]
 T = [4,5,6,7]
+cluster=[[0,1,2,3],[4,5,6,7]]
 
 # Conductance
-condScore = conductance(barb,S)
+sumOfCond = []
+
+for i in range(len(cluster)):
+    sumOfCond.append(conductance(barb,cluster[i]))
+    
+condScoreS = conductance(barb,S)
+condScoreT = conductance(barb,T)
+overallCond = min(sumOfCond)
 
 # Modularity Communities
 barbMod = list(greedy_modularity_communities(barb))
@@ -36,10 +43,11 @@ print("Communities: ", barbMod)
 print("Modularity: ", barbModScore)
 
 # Conductance Score
-print("Conductance: ", condScore)
+print("Conductance for: ", S, condScoreS)
+print("Conductance for: ", T, condScoreT)
+print("Overall Conductance: ", overallCond)
+
 
 # edge_betweenness_centrality
 print("Edge Betweenness Centrality Score: ", barbaverageEdge)
 print("Edge Betweenness Centrality: ", barbedgeBetweenness)
-
-
