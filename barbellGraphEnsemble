@@ -1,8 +1,5 @@
 # -*- coding: utf-8 -*-
-"""
-Created on Mon Jun 10 22:24:42 2019
-
-@author: Rusty
+# Ensemble on barbell graph
 """
 import networkx as nx
 from networkx.algorithms.community import greedy_modularity_communities
