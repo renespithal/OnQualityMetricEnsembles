@@ -67,7 +67,7 @@ from networkx.algorithms.community import quality as qu
 # Create a networkx graph object
 new_graph = nx.Graph() 
 
-adjac = [(0,0)] # should make any difference
+adjac = [(0,0)] # should not make any difference
 for bb in AZ:
     adjac.append((tuple(bb[:-2])))
     # print(adjac)
