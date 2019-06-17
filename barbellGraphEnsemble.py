@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 # Ensemble on barbell graph
-"""
+
 import networkx as nx
 from networkx.algorithms.community import greedy_modularity_communities
 from networkx.algorithms.cuts import conductance
