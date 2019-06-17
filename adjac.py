@@ -85,11 +85,12 @@ import networkx as nx
 # Create a networkx graph object
 new_graph = nx.Graph() 
 
-adjac = [(0,0)]
+adjac = [(0,0)] # should make any difference
 for bb in AZ:
     adjac.append((tuple(bb[:-2])))
-    print(adjac)
-
+    # print(adjac)
+print(adjac)
+print(AZ)
 
 new_graph.add_edges_from(adjac)
  
