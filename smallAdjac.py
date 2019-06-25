@@ -83,9 +83,42 @@ new_graph.add_edges_from(adjac)
 # Draw the resulting graph
 nx.draw(new_graph, with_labels=True, font_weight='bold')
 
+S = [6,7,13]
+T = [4,15,8,14,3,11,1,10,0]
+cluster=[[6,7,13],[2,5,12],[4,15,8,14,3,11,1,10,0]]
 
-"""
+# Conductance
+sumOfCond = []
 
-END
+for i in range(len(cluster)):
+    sumOfCond.append(conductance(new_graph,cluster[i]))
+    
+condScoreS = conductance(new_graph,S)
+condScoreT = conductance(new_graph,T)
+overallCond = min(sumOfCond)
 
-"""
+# Modularity Communities
+barbMod = list(greedy_modularity_communities(new_graph))
+
+# Modularity Score
+barbModScore =  qu.modularity(new_graph, barbMod)
+
+# edge_betweenness_centrality
+barbedgeBetweenness=  nx.edge_betweenness_centrality(new_graph,None,False)
+barbaverageEdge = sum(barbedgeBetweenness.values())/len(barbedgeBetweenness)
+barbtotalEdge = sum(barbedgeBetweenness.values())
+
+# print sets of nodes, one for each community.
+print("Communities: ", barbMod)
+
+# Modularity Score
+print("Modularity: ", barbModScore)
+
+# Conductance Score
+print("Conductance for: ", S, condScoreS)
+print("Conductance for: ", T, condScoreT)
+print("Overall Conductance: ", overallCond)
+
+
+# edge_betweenness_centrality
+print("Edge Betweenness Centrality Score: ", barbaverageEdge)
