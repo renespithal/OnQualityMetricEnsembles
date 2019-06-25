@@ -70,14 +70,11 @@ new_graph = nx.Graph()
 adjac = [(0,0)] # should not make any difference
 n = len(Z)
 for bb in Z:
+    n=n+1
     x,y = (tuple(bb[:-2]))
-    print(x)
-    print(y)
-    print(n)
     adjac.append(tuple([x,n]))
     adjac.append(tuple([y,n]))
-    n=n+1
-    print(adjac)
+    # print(adjac)
 print(adjac)
 print(Z)
 
