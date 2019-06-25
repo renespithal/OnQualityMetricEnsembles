@@ -68,8 +68,8 @@ from networkx.algorithms.community import quality as qu
 new_graph = nx.Graph() 
 
 adjac = [(0,0)] # should not make any difference
-n = 10
-for bb in AZ:
+n = len(Z)
+for bb in Z:
     x,y = (tuple(bb[:-2]))
     print(x)
     print(y)
@@ -79,7 +79,7 @@ for bb in AZ:
     n=n+1
     print(adjac)
 print(adjac)
-print(AZ)
+print(Z)
 
 new_graph.add_edges_from(adjac)
  
