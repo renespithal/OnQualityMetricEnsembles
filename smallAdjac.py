@@ -41,11 +41,11 @@ distanceMatrix = pdist(Data)
 Z = hier.linkage(distanceMatrix, method='complete')
 
 # cut dendrogram at certain distance
-fc = hier.fcluster(Z, 3 , criterion='distance')
+fc = hier.fcluster(Z, 3, criterion='distance')
 
 # print the clusters 
 for k in range(1,max(fc)):
-    print(np.where(fc == k))
+    print(list(np.where(fc==k)[0]))
     
 """ 
 trying to generate adjac from linkage
