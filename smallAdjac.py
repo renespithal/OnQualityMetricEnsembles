@@ -68,9 +68,16 @@ from networkx.algorithms.community import quality as qu
 new_graph = nx.Graph() 
 
 adjac = [(0,0)] # should not make any difference
+n = 10
 for bb in AZ:
-    adjac.append((tuple(bb[:-2])))
-    # print(adjac)
+    x,y = (tuple(bb[:-2]))
+    print(x)
+    print(y)
+    print(n)
+    adjac.append(tuple([x,n]))
+    adjac.append(tuple([y,n]))
+    n=n+1
+    print(adjac)
 print(adjac)
 print(AZ)
 
