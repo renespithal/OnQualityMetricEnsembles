@@ -42,14 +42,21 @@ Z = hier.linkage(distanceMatrix, method='complete')
 
 # cut dendrogram at certain distance
 fc = hier.fcluster(Z, 3, criterion='distance')
-
+cluster=[[]]
 # print the clusters 
 for k in range(1,max(fc)):
-    print(list(np.where(fc==k)[0]))
+    print("Flat cluster",k,": ", list(np.where(fc==k)[0]))
+    cluster.append(list(np.where(fc==k)[0]))
+
+# make list from list of list cluster
+flat_list = []
+for sublist in cluster:
+    for item in sublist:
+        flat_list.append(item)
+print("Flat cluster list: ", flat_list)
     
 """ 
 trying to generate adjac from linkage
-
 """
 
 # Cutting the dendrogram with cut_tree
@@ -85,7 +92,7 @@ nx.draw(new_graph, with_labels=True, font_weight='bold')
 
 S = [6,7,13]
 T = [4,15,8,14,3,11,1,10,0]
-cluster=[[6,7,13],[2,5,12],[4,15,8,14,3,11,1,10,0]]
+
 
 # Conductance
 sumOfCond = []
