@@ -5,6 +5,10 @@
 import matplotlib.pyplot as plt
 from sklearn import datasets
 import numpy as np
+import networkx as nx
+from networkx.algorithms.community import greedy_modularity_communities
+from networkx.algorithms.cuts import conductance
+from networkx.algorithms.community import quality as qu
 
 # import some data to play with
 iris = datasets.load_iris()
@@ -27,14 +31,22 @@ plt.show()
 
 # Cutting the dendrogram
 distanceMatrix = pdist(Data)
-Z = hier.linkage(distanceMatrix, method='complete')
+Z = hier.linkage(distanceMatrix, method='ward')
 
 # cut dendrogram at certain distance
-di = 2
-fc = hier.fcluster(Z, di, criterion='distance')
+
+cutDistance = [0,1,2,3,4,5,6,7,8]
+a = 2
+print(cutDistance[a])
+fc = hier.fcluster(Z, cutDistance[a], criterion='distance')
 clusterL=[[]]
+print("\n")
+print("Ensemble Scores for Cutsize: ", cutDistance[a])
+print("\n")
+print("Number of Clusters: ", max(fc))
+print("\n")
 # print the clusters 
-for k in range(1,max(fc)):
+for k in range(1,max(fc)+1):
     print("Flat cluster",k,": ", list(np.where(fc==k)[0]))
     clusterL.append(list(np.where(fc==k)[0]))
 
@@ -44,11 +56,7 @@ for sublist in clusterL:
     for item in sublist:
         flat_list.append(item)
 print("Flat cluster list: ", flat_list)
-    
-import networkx as nx
-from networkx.algorithms.community import greedy_modularity_communities
-from networkx.algorithms.cuts import conductance
-from networkx.algorithms.community import quality as qu
+print("\n")
 # Create a networkx graph object
 new_graph = nx.Graph() 
 
@@ -82,7 +90,7 @@ barbaverageEdge = sum(barbedgeBetweenness.values())/len(barbedgeBetweenness)
 barbtotalEdge = sum(barbedgeBetweenness.values())
 print("\n")
 print("\n")
-print("Scores for Cut Distance: ", di)
+print("Scores for Cut Distance: ", cutDistance[a])
 print("\n")
 # print sets of nodes, one for each community.
 print("Communities: ", barbMod)
