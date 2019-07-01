@@ -32,7 +32,7 @@ distanceMatrix = pdist(Data)
 Z = hier.linkage(distanceMatrix, method='ward')
 
 # cut dendrogram at certain distances
-cutDistance = [2,3]
+cutDistance = [3]
 
 # Calculate score and draw graph for each cut distance
 for a in range (len(cutDistance)):
