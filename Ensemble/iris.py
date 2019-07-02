@@ -60,6 +60,7 @@ intersectIntervals = sorted(set(rCutIntervals))
 
 
 # cut dendrogram at equi distances from 0 to max distance where clusters were formed
+# [0,1,2,...,max]
 ## cutDistance = list(range(int(round(max(intersectIntervals)))+1))
 cutDistance = [3]
 
