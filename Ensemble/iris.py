@@ -59,7 +59,7 @@ rCutIntervals = np.around(cutIntervals, decimals=1)
 intersectIntervals = sorted(set(rCutIntervals))
 
 
-# cut dendrogram at equi distances
+# cut dendrogram at equi distances from 0 to max distance where clusters were formed
 ## cutDistance = list(range(int(round(max(intersectIntervals)))+1))
 cutDistance = [3]
 
