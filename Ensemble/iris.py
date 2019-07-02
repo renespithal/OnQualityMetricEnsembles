@@ -64,6 +64,9 @@ for a in range (len(cutDistance)):
     for bb in Z:
         # connection to the next node/cluster
         n=n+1
+        if bb[2] == 0:
+            print("no dist")
+            continue
         x,y = (tuple(bb[:-2]))
         adjac.append(tuple([x,n]))
         adjac.append(tuple([y,n]))
