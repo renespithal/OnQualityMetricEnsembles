@@ -175,5 +175,5 @@ bestModCut = max(modularityEnsemble, key=modularityEnsemble.get)
 bestConduc = min(conductanceEnsemble, key=conductanceEnsemble.get)
 bestEdgeCut = min(edgeEnsemble, key=edgeEnsemble.get)
 
-result = 'best cut-distance for: Modularity: {} Conductance: {} Edge Betweenness Centrality:{}'.format(bestModCut,bestConduc,bestEdgeCut)
-print(result)
+print('best score for: \nModularity: {} at Cut = {} \nConductance: {} at Cut = {} \nEdge Betweenness Centrality:{} at Cut = {}'.format(modularityEnsemble[bestModCut],bestModCut,conductanceEnsemble[bestConduc],bestConduc,edgeEnsemble[bestEdgeCut],bestEdgeCut))
+
