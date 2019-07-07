@@ -75,15 +75,16 @@ edgeEnsemble = {}
 
 # cut dendrogram at equi distances from 0 to max distance where clusters were formed
 # [0,1,2,...,max]
-#cutDistanceRange = list(range(int(round(max(intersectIntervals)))+1))
-#cutDistance = cutDistanceRange
+cutDistanceRange = list(range(int(round(max(intersectIntervals)))+1))
+cutDistance = cutDistanceRange
 
-cutDistance = [3]
+#cutDistance = [1]
 
 
 # Calculate score and draw graph for each cut distance
 for a in range (len(cutDistance)):
-    if cutDistance[a] == 0:
+    # For Cut Distance 0 => show singleton clusters otherwise skip
+    if cutDistance[a] == 0 and len(cutDistance) > 1:
         continue
     fc = hier.fcluster(Z, cutDistance[a], criterion='distance')
     clusterL=[]
@@ -115,7 +116,15 @@ for a in range (len(cutDistance)):
         n=n+1
         if bb[2] == 0:
             continue
+        # bb[2] > cutDistance[a] = kante fällt durch den cut weg / noise wird gezeichnet
+        # x1 oder y1 < len(Z) = wird gezeichnet falls original data point => singleton cluster
         if bb[2] > cutDistance[a]:
+            x1 = bb[0]
+            y1 = bb[1]
+            if x1 <= len(Z):              
+                adjac.append(tuple([x1,x1]))
+            if y1 <= len(Z):
+                adjac.append(tuple([y1,y1]))
             continue
         x,y = (tuple(bb[:-2]))
         adjac.append(tuple([x,n]))
