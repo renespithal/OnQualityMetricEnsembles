@@ -8,16 +8,15 @@ from networkx.algorithms.cuts import volume
 from networkx.algorithms.cuts import cut_size
 from networkx.algorithms.community import quality as qu
 
-Data = [[1, 2],
- [2, 2],
- [3, 4],
- [2, 3],
- [1, 1],
- [4, 5],
- [5, 6],
- [4, 7],
- [3, 2],
- [6, 3]]
+# import Iris data from sklearn
+iris = datasets.load_iris()
+# we only take the first two features.
+X = iris.data[:, :2]  
+x = X[:, 0]
+y = X[:, 1]
+plt.scatter(x, y)
+plt.show()
+Data = X[:, :2]
 
 
 # Creating a dendrogram
