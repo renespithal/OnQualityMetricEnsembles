@@ -55,6 +55,12 @@ original_graph.add_edges_from(originalAdjac)
 #nx.draw(original_graph, with_labels=True, font_weight='bold')
 
 
+# score dicts
+# key = cutDistance 
+# value = Score
+modularityEnsemble = {}
+conductanceEnsemble = {}
+edgeEnsemble = {}
 
 # cut dendrogram at distances where clusters were formed
 cutIntervals = []
@@ -63,15 +69,6 @@ for xs in Z:
 rCutIntervals = np.around(cutIntervals, decimals=1)
 intersectIntervals = sorted(set(rCutIntervals))
 # cutDistance = intersectIntervals
-
-# score dicts
-# key = cutDistance 
-# value = Score
-modularityEnsemble = {}
-conductanceEnsemble = {}
-edgeEnsemble = {}
-
-
 
 # cut dendrogram at equi distances from 0 to max distance where clusters were formed
 # [0,1,2,...,max]
