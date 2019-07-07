@@ -75,14 +75,15 @@ edgeEnsemble = {}
 
 # cut dendrogram at equi distances from 0 to max distance where clusters were formed
 # [0,1,2,...,max]
-cutDistanceRange = list(range(int(round(max(intersectIntervals)))+1))
-cutDistance = cutDistanceRange
-#cutDistance = [5]
+#cutDistanceRange = list(range(int(round(max(intersectIntervals)))+1))
+#cutDistance = cutDistanceRange
+
+cutDistance = [3]
 
 
 # Calculate score and draw graph for each cut distance
 for a in range (len(cutDistance)):
-    if a == 0:
+    if cutDistance[a] == 0:
         continue
     fc = hier.fcluster(Z, cutDistance[a], criterion='distance')
     clusterL=[]
@@ -123,6 +124,7 @@ for a in range (len(cutDistance)):
     new_graph.add_edges_from(adjac)
      
     # Draw the resulting graph
+    plt.clf()
     nx.draw(new_graph, with_labels=True, font_weight='bold')
     
     # Modularity Communities
@@ -176,4 +178,3 @@ bestConduc = min(conductanceEnsemble, key=conductanceEnsemble.get)
 bestEdgeCut = min(edgeEnsemble, key=edgeEnsemble.get)
 
 print('best score for: \nModularity: {} at Cut = {} \nConductance: {} at Cut = {} \nEdge Betweenness Centrality:{} at Cut = {}'.format(modularityEnsemble[bestModCut],bestModCut,conductanceEnsemble[bestConduc],bestConduc,edgeEnsemble[bestEdgeCut],bestEdgeCut))
-
