@@ -5,17 +5,19 @@ import networkx as nx
 from networkx.algorithms.community import greedy_modularity_communities
 from networkx.algorithms.cuts import conductance
 from networkx.algorithms.cuts import volume
+from networkx.algorithms.cuts import cut_size
 from networkx.algorithms.community import quality as qu
 
-# import Iris data from sklearn
-iris = datasets.load_iris()
-# we only take the first two features.
-X = iris.data[:, :2]  
-x = X[:, 0]
-y = X[:, 1]
-plt.scatter(x, y)
-plt.show()
-Data = X[:, :2]
+Data = [[1, 2],
+ [2, 2],
+ [3, 4],
+ [2, 3],
+ [1, 1],
+ [4, 5],
+ [5, 6],
+ [4, 7],
+ [3, 2],
+ [6, 3]]
 
 
 # Creating a dendrogram
@@ -50,6 +52,9 @@ for bb in Z:
 
 original_graph.add_edges_from(originalAdjac)
 
+#nx.draw(original_graph, with_labels=True, font_weight='bold')
+
+
 
 # cut dendrogram at distances where clusters were formed
 cutIntervals = []
@@ -57,16 +62,28 @@ for xs in Z:
     cutIntervals.append(xs[2])
 rCutIntervals = np.around(cutIntervals, decimals=1)
 intersectIntervals = sorted(set(rCutIntervals))
+# cutDistance = intersectIntervals
+
+# score dicts
+# key = cutDistance 
+# value = Score
+modularityEnsemble = {}
+conductanceEnsemble = {}
+edgeEnsemble = {}
+
 
 
 # cut dendrogram at equi distances from 0 to max distance where clusters were formed
 # [0,1,2,...,max]
-# cutDistance = list(range(int(round(max(intersectIntervals)))+1))
-cutDistance = [3]
+cutDistanceRange = list(range(int(round(max(intersectIntervals)))+1))
+cutDistance = cutDistanceRange
+#cutDistance = [5]
 
 
 # Calculate score and draw graph for each cut distance
 for a in range (len(cutDistance)):
+    if a == 0:
+        continue
     fc = hier.fcluster(Z, cutDistance[a], criterion='distance')
     clusterL=[]
     print("\n")
@@ -89,13 +106,15 @@ for a in range (len(cutDistance)):
     # Create a networkx graph object
     new_graph = nx.Graph() 
     
-    adjac = [] # should not make any difference
+    adjac = []
     n = len(Z)
     # make adjacency matrix from linkage matrix
     for bb in Z:
         # connection to the next node/cluster
         n=n+1
         if bb[2] == 0:
+            continue
+        if bb[2] > cutDistance[a]:
             continue
         x,y = (tuple(bb[:-2]))
         adjac.append(tuple([x,n]))
@@ -107,25 +126,26 @@ for a in range (len(cutDistance)):
     nx.draw(new_graph, with_labels=True, font_weight='bold')
     
     # Modularity Communities
-    barbMod = list(greedy_modularity_communities(new_graph))
+    Com = list(greedy_modularity_communities(new_graph))
     
     # Modularity Score
-    barbModScore =  qu.modularity(new_graph, barbMod)
+    ModScore =  qu.modularity(new_graph, Com)
     
     # edge_betweenness_centrality
-    barbedgeBetweenness=  nx.edge_betweenness_centrality(new_graph,None,False)
-    barbaverageEdge = sum(barbedgeBetweenness.values())/len(barbedgeBetweenness)
-    barbtotalEdge = sum(barbedgeBetweenness.values())
+    edgeBetweenness=  nx.edge_betweenness_centrality(new_graph,None,False)
+    averageEdge = sum(edgeBetweenness.values())/len(edgeBetweenness)
+    totalEdge = sum(edgeBetweenness.values())
+    
     print("\n")
     print("\n")
     print("Scores for Cut Distance: ", cutDistance[a])
     print("\n")
-    # print sets of nodes, one for each community.
-    # print("Communities: ", barbMod)
-    # print("\n")
+    
     # Modularity Score
-    print("Modularity: ", barbModScore)
+    print("Modularity: ", ModScore)
     print("\n")
+    modularityEnsemble.update({cutDistance[a]: ModScore})
+    
     # Conductance Score
     sumOfCond = []
     
@@ -139,9 +159,21 @@ for a in range (len(cutDistance)):
         currentCond = conductance(original_graph,clusterL[i])
         sumOfCond.append(currentCond)
         print("Conductance for: ", clusterL[i], " = ", currentCond)
+        
     overallCond = min(sumOfCond)
+    
     print("Overall Conductance: ", overallCond)
     print("\n")
+    conductanceEnsemble.update({cutDistance[a]: overallCond})
     
-    # edge_betweenness_centrality
-    print("Edge Betweenness Centrality Score: ", barbaverageEdge)
+    # edge betweenness centrality Score
+    print("Edge Betweenness Centrality Score: ", averageEdge)
+    print("Edge Betweenness Centrality Score: ", totalEdge)
+    edgeEnsemble.update({cutDistance[a]: totalEdge})
+
+bestModCut = max(modularityEnsemble, key=modularityEnsemble.get)
+bestConduc = min(conductanceEnsemble, key=conductanceEnsemble.get)
+bestEdgeCut = min(edgeEnsemble, key=edgeEnsemble.get)
+
+result = 'best cut-distance for: Modularity: {} Conductance: {} Edge Betweenness Centrality:{}'.format(bestModCut,bestConduc,bestEdgeCut)
+print(result)
