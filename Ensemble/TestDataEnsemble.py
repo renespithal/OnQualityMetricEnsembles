@@ -72,10 +72,10 @@ intersectIntervals = sorted(set(rCutIntervals))
 
 # cut dendrogram at equi distances from 0 to max distance where clusters were formed
 # [0,1,2,...,max]
-#cutDistanceRange = list(range(int(round(max(intersectIntervals)))+1))
-#cutDistance = cutDistanceRange
+cutDistanceRange = list(range(int(round(max(intersectIntervals)))+1))
+cutDistance = cutDistanceRange
 
-cutDistance = [1]
+#cutDistance = [3]
 
 
 # Calculate score and draw graph for each cut distance
@@ -164,7 +164,8 @@ for a in range (len(cutDistance)):
         if nx.volume(original_graph,clusterL[i]) == 0:
             continue
         # calculate Cond for current Cluster in list of Clusters 
-        currentCond = conductance(original_graph,clusterL[i])
+        currentCond = 1/nx.volume(original_graph,clusterL[i])
+        # currentCond = conductance(original_graph,clusterL[i])
         sumOfCond.append(currentCond)
         print("Conductance for: ", clusterL[i], " = ", currentCond)
         
