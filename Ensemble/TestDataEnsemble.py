@@ -2,6 +2,8 @@ import matplotlib.pyplot as plt
 from sklearn import datasets
 import numpy as np
 import networkx as nx
+from scipy.spatial.distance import pdist
+import scipy.cluster.hierarchy as hier
 from networkx.algorithms.community import greedy_modularity_communities
 from networkx.algorithms.cuts import conductance
 from networkx.algorithms.cuts import volume
@@ -19,21 +21,16 @@ Data = [[1, 2],
  [3, 2],
  [6, 3]]
 
-
-# Creating a dendrogram
-from scipy.spatial.distance import pdist
-import scipy.cluster.hierarchy as hier
-dendrogram = hier.dendrogram(hier.linkage(Data, method = 'ward'))
-plt.title('Dendrogram')
-plt.xlabel('Index')
-plt.ylabel('Distance')
-plt.show()
-
-
 # Creating Linkage Matrix Z
 distanceMatrix = pdist(Data)
 Z = hier.linkage(distanceMatrix, method='ward')
 
+# Creating a dendrogram
+dendrogram = hier.dendrogram(Z)
+plt.title('Dendrogram')
+plt.xlabel('Index')
+plt.ylabel('Distance')
+plt.show()
 
 # Create a networkx graph before any cuts
 original_graph = nx.Graph() 
