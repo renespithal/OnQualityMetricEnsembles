@@ -81,7 +81,11 @@ original_graph.add_edges_from(originalAdjac)
 # score dicts
 # key = cutDistance 
 # value = Score
+myModularityEnsemble = {}
+myModY = []
+myModScoreEnsemble = {}
 modularityEnsemble = {}
+modY = []
 conductanceEnsemble = {}
 edgeEnsemble = {}
 
@@ -98,8 +102,8 @@ cutDistance = intersectIntervals
 
 # cut dendrogram at equi distances from 0 to max distance where clusters were formed
 # [0,1,2,...,max]
-#cutDistanceRange = list(range(int(round(max(intersectIntervals)))+1))
-#cutDistance = cutDistanceRange
+cutDistanceRange = list(range(int(round(max(intersectIntervals)))+1))
+cutDistance = cutDistanceRange
 
 #cutDistance = [2.1]
 
@@ -224,10 +228,14 @@ for a in range (len(cutDistance)):
     
     myNewModScore = 0.0
     myB = B2.tolist()
-    for x in range(len(B2)-1):
-       for y in range(len(B2)-1):
-           myNewModScore = myNewModScore + myB[x][y] * adjac_matrix3[x][y]
-    myNewModScore = myNewModScore / len(az)
+    for x in range(len(myB)-1):
+       for y in range(len(myB)-1):
+           if adjac_matrix2[x][y] == 1:
+               myNewModScore = myNewModScore + myB[x][y]
+    if len(az) != 0:
+         myNewModScore = myNewModScore / len(az)  
+    myModularityEnsemble.update({cutDistance[a]: myNewModScore})
+    myModY.append(myNewModScore)
     print("\n")
     print("adjacency matrix for cut size: ", cutDistance[a])
     print("\n")
@@ -263,21 +271,23 @@ for a in range (len(cutDistance)):
     print("Scores for Cut Distance: ", cutDistance[a])
     print("\n")
     
+    # Modularity Score
     G3 = nx.from_numpy_matrix(adjac_matrix3)
-    nodelist = list(G3)
     myModScore = 0 
     for x in az:
         myModScore = myModScore + B2.item(x)
-    
-    myModScore = myModScore / len(az)
-    print("mynew modscore: ", myNewModScore)
-    print("My Modularity: ", myModScore)
-    print("\n")
-    
-    # Modularity Score
+    if len(az) != 0:
+        myModScore = myModScore / len(az)
+    myModScoreEnsemble.update({cutDistance[a]: myModScore})
     print("Modularity: ", ModScore)
     print("\n")
+    print("mynew modscore: ", myNewModScore)
+    print("\n")
+    print("My Modularity: ", myModScore)
+    print("\n")
+
     modularityEnsemble.update({cutDistance[a]: ModScore})
+    modY.append(ModScore)
     
     # Conductance Score
     sumOfCond = []
@@ -311,7 +321,30 @@ for a in range (len(cutDistance)):
     edgeEnsemble.update({cutDistance[a]: totalEdge})
 
 bestModCut = max(modularityEnsemble, key=modularityEnsemble.get)
+bestMyModCut = max(myModScoreEnsemble, key=myModScoreEnsemble.get)
+bestMyNewModCut = max(myModularityEnsemble, key=myModularityEnsemble.get)
 bestConduc = min(conductanceEnsemble, key=conductanceEnsemble.get)
 bestEdgeCut = min(edgeEnsemble, key=edgeEnsemble.get)
 
-print('best score for: \nModularity: {} at Cut = {} \nConductance: {} at Cut = {} \nEdge Betweenness Centrality:{} at Cut = {}'.format(modularityEnsemble[bestModCut],bestModCut,conductanceEnsemble[bestConduc],bestConduc,edgeEnsemble[bestEdgeCut],bestEdgeCut))
+print('best score for: \nModularity: {} at Cut = {} \nMyModularity: {} at Cut = {} \nMyNewModularity: {} at Cut = {}  \nConductance: {} at Cut = {} \nEdge Betweenness Centrality:{} at Cut = {}'.format(modularityEnsemble[bestModCut],bestModCut,myModScoreEnsemble[bestMyModCut],bestMyModCut,myModularityEnsemble[bestMyNewModCut],bestMyNewModCut, conductanceEnsemble[bestConduc],bestConduc,edgeEnsemble[bestEdgeCut],bestEdgeCut))
+# x axis values 
+xMod = cutDistance
+# corresponding y axis values 
+yMod = modY
+# plotting the points  
+plt.plot(xMod, yMod)
+# naming the x axis 
+plt.xlabel('cut Distance') 
+# naming the y axis 
+plt.ylabel('Modularity Score') 
+
+# x axis values 
+xMyMod = cutDistance
+# corresponding y axis values 
+yMyMod = myModY
+# plotting the points  
+plt.plot(xMyMod, yMyMod)
+# naming the x axis 
+plt.xlabel('cut Distance') 
+# naming the y axis 
+plt.ylabel('Modularity Score') 
