@@ -25,6 +25,7 @@ Data = [[1, 2],
 x,y = list(zip(*Data))
 plt.scatter(x, y)
 plt.show()
+
 # Creating Linkage Matrix Z
 distanceMatrix = pdist(Data, 'euclidean')
 Z = hier.linkage(distanceMatrix, 'ward')
@@ -153,6 +154,7 @@ for a in range (len(cutDistance)):
         
         adjac.append(tuple([x,n]))
         adjac.append(tuple([y,n]))
+        # no loops
         #adjac.append(tuple([x,y]))
         #adjac.append(tuple([y,x]))
     
@@ -161,8 +163,6 @@ for a in range (len(cutDistance)):
     # Draw the resulting graph
     plt.clf()
     nx.draw(new_graph, with_labels=True, font_weight='bold')
-
-    
     
     # Creating adjac matrix
     adjac_matrix = np.zeros((len(Data), len(Data)),dtype=int)
@@ -186,9 +186,11 @@ for a in range (len(cutDistance)):
         adjac_matrix2[nodex] = 1
     
     
+    # computing modularity matrix for adjac matrix #1
     G1 = nx.from_numpy_matrix(adjac_matrix)
     B1 = nx.modularity_matrix(G1)
     
+    # computing modularity matrix adjac matrix #2
     G2 = nx.from_numpy_matrix(adjac_matrix2)
     B2 = nx.modularity_matrix(G2)
     
@@ -215,6 +217,7 @@ for a in range (len(cutDistance)):
                 #if blabla[xi][xj] != blabla[xi][xk]:
                     adjac_matrix3[blabla[xi][xj]][blabla[xi][xk]]=1
     
+    # compute modularity score by hand from textbook
     myNewModScore = 0.0
     myB = B2.tolist()
     for x in range(len(myB)-1):
@@ -244,10 +247,10 @@ for a in range (len(cutDistance)):
 
 
     
-    # Modularity Communities
+    # Modularity Communities by networkX
     Com = list(greedy_modularity_communities(new_graph))
     print(Com)
-    # Modularity Score
+    # Modularity Score by networkX
     ModScore =  qu.modularity(new_graph, Com)
     
     # edge_betweenness_centrality
@@ -260,7 +263,7 @@ for a in range (len(cutDistance)):
     print("Scores for Cut Distance: ", cutDistance[a])
     print("\n")
     
-    # Modularity Score
+    # Modularity Score by hand from textbook
     G3 = nx.from_numpy_matrix(adjac_matrix3)
     myModScore = 0 
     for x in az:
